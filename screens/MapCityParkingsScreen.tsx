@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Image, SafeAreaView, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import MapView, { Marker, PROVIDER_GOOGLE, Region } from "react-native-maps";
 import { themeStyles } from "../styleSheet/theme";
-import { ICityParkingData, ScreensName } from "../types/index.d";
+import { ICityParkingData } from "../types/index.d";
 import { useEffect } from "react";
 import { dataFetch } from "../api";
 import { calculateCoordinateDelta } from "../utils/map";
@@ -122,7 +122,7 @@ const MapCityParkingsScreen: React.FC<{ route: any, navigation: any }> = ({ rout
                             <View style={{ width: '100%', marginTop: 15, flex: 1, display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
                                 <TouchableOpacity
                                     style={{ width: '100%', maxWidth: 250, height: 80, borderRadius: 40, backgroundColor: getCounterColor(parkingInfo), overflow: 'hidden', display: "flex", alignItems: 'center', justifyContent: 'center', flexDirection: 'row' }}
-                                    onPress={() => navigation.navigate(ScreensName.ParkingInfo, parkingInfo)}
+                                    onPress={() => /*navigation.navigate(ScreensName.ParkingInfo, parkingInfo)*/ {}}
                                 >
                                     <View style={{ width: '50%', borderRightWidth: 2, borderRightColor: 'rgba(255, 255, 255, 0.5)' }}>
                                         <View>

@@ -22,3 +22,8 @@ export interface ICityParkingData {
     y: numnber;
     scode: string;
 }
+
+export interface ParkingCarsTimes{
+    mvalidtime: number;
+    mvalue: number;
+}

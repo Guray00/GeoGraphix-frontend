@@ -1,4 +1,4 @@
-import { ICityParkingData } from "../types"
+import { ICityParkingData, ParkingCarsTimes } from "../types"
 import { APILink } from "../utils/api"
 
 async function fetchCityParkings(city: string){
@@ -29,7 +29,7 @@ async function fetchParking(scode: string){
 async function fetchChartParkingDaylyCars(scode: string){
     const chart =  await fetch(`${APILink.dataset.chart.parkingChartDaylyCars}?scode=${scode}`)
     .then(response => response.json())
-    .then( (chart: ICityParkingData) => chart)
+    .then( (chart: ParkingCarsTimes) => chart)
     .catch(error => {
         console.log(error);
         return [];
@@ -49,6 +49,7 @@ async function fetchEcharges(){
 
     return {echarges};
 }
+
 
 export const dataFetch = {
     city: {
