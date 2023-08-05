@@ -1,5 +1,4 @@
 import { View } from "react-native";
-import { themeStyles } from "../styleSheet/theme";
 import MapView,{Marker, PROVIDER_GOOGLE} from "react-native-maps";
 
 const MapCityParkingsScreen: React.FC = () => {
@@ -19,7 +18,6 @@ const MapCityParkingsScreen: React.FC = () => {
                     coordinate={{longitude: -122.4324, latitude: 37.78825}}
                     title="Daouda"
                     description="Ciao"
-                    
                 />
             </MapView>
         </View>
