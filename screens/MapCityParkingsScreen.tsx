@@ -10,6 +10,7 @@ import { calculateCoordinateDelta } from "../utils/map";
 import SearchParking from "../components/SearchParking";
 import SearchIcon from "../components/SearchIcon";
 import { mapMakerIconEcharge, mapeMakerIconGreen, mapeMakerIconRed, mapeMakerIconYellow } from "../utils/constants";
+import Chart from "../components/Chart";
 
 const MapCityParkingsScreen: React.FC<{ route: any, navigation: any }> = ({ route, navigation }) => {
     
@@ -58,8 +59,6 @@ const MapCityParkingsScreen: React.FC<{ route: any, navigation: any }> = ({ rout
     useEffect(()=>{
         fetchParkings();
     }, []);
-
-    console.log(echarges);
 
     return (
         <SafeAreaView style={{ flex: 1, position: 'relative' }}>
@@ -148,6 +147,13 @@ const MapCityParkingsScreen: React.FC<{ route: any, navigation: any }> = ({ rout
                                     <Text style={[themeStyles.text, themeStyles.colorSecondary, { textAlign: 'center', color: 'rgb(29, 155, 240)' }]}>Show more</Text>
                                 </TouchableOpacity>
                             )}
+
+                            {showMoreInfo && (
+                                <View style={{width: '100%', marginTop: 30, borderRadius: 20, overflow: 'hidden'}}>
+                                    <Chart scope={parkingInfo.scode} />
+                                </View>
+                            )}
+                            
 
                         </ScrollView>
                     </BlurView>
