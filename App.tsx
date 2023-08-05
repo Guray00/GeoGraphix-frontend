@@ -7,7 +7,7 @@ import MapCityParkingsScreen from './screens/MapCityParkingsScreen';
 import ParkingInfoScreen from './screens/ParkingInfoScreen';
 import ParkingSearchScreen from './screens/ParkingSearchScreen';
 import LoginScreen from './screens/LoginScreen';
-import { ScreensName } from './types';
+import { ScreensName } from './types/index.d';
 
 const Stack = createNativeStackNavigator();
 
@@ -15,7 +15,7 @@ export default function App() {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator>
+      <Stack.Navigator initialRouteName={ScreensName.ParkingInfo}>
         <Stack.Screen 
           name={ScreensName.Login}
           component={LoginScreen}

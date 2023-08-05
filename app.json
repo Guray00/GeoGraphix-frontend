@@ -15,16 +15,30 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.hackathon.geographix",
+      "config": {
+        "googleMapsApiKey": "AIzaSyDYr6og90erYaDg44db2OJ82-hbRZTVF7o"
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
+      },
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyC_l-nTKJeHDfMvwcsPA2DNSkxFNfZFzZc"
+        }
       }
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "52bd14e9-d0cb-46a7-941b-7fb428b0719c"
+      }
     }
   }
 }
