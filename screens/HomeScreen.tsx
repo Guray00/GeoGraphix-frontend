@@ -35,7 +35,7 @@ const HomeScreen: React.FC<{ route: any, navigation: any }> = ({ route, navigati
                 style={{ height: '100%', width: '100%', flex: 1, position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center', backgroundColor: '#f8f8f8' }}
             />
             <View style={{ position: 'absolute', top: 0, bottom: 0, width: '100%', height: '100%' }}>
-                <BlurView intensity={35} style={{ position: 'relative', width: '100%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                <BlurView intensity={20} style={{ position: 'relative', width: '100%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                 <View style={{marginBottom: 20}}>
                     <Image 
                         source={{uri: "https://img.freepik.com/free-psd/3d-rendering-gps-travel-icon_23-2149389115.jpg?t=st=1691202128~exp=1691202728~hmac=9acaa5cb11452f23d9e10f0f73de4b6538b44a0f55ea7bd5839b2a26c76734d0"}}
