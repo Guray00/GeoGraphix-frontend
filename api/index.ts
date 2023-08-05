@@ -38,6 +38,18 @@ async function fetchChartParkingDaylyCars(scode: string){
     return {chart};
 }
 
+async function fetchEcharges(){
+    const echarges =  await fetch(`${APILink.dataset.echarges}`)
+    .then(response => response.json())
+    .then( (echarges: any[]) => echarges)
+    .catch(error => {
+        console.log(error);
+        return [];
+    })
+
+    return {echarges};
+}
+
 export const dataFetch = {
     city: {
         parkings: fetchCityParkings ,
@@ -45,5 +57,6 @@ export const dataFetch = {
     parking: fetchParking,
     chart: {
         parkingDaylyCars: fetchChartParkingDaylyCars ,
-    }
+    },
+    echarges: fetchEcharges
 }

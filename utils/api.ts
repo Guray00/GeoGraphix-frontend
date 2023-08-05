@@ -6,6 +6,7 @@ export const APILink = {
         parkingInfo: `${SERVER}/api/parking`,
         chart: {
             parkingChartDaylyCars: `${SERVER}/api/parking/chart/dayly/cars`,
-        }
+        },
+        echarges: `${SERVER}/api/echarges`
     }
 }

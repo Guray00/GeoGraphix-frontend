@@ -9,12 +9,13 @@ import { dataFetch } from "../api";
 import { calculateCoordinateDelta } from "../utils/map";
 import SearchParking from "../components/SearchParking";
 import SearchIcon from "../components/SearchIcon";
-import { mapeMakerIconGreen, mapeMakerIconRed, mapeMakerIconYellow } from "../utils/constants";
+import { mapMakerIconEcharge, mapeMakerIconGreen, mapeMakerIconRed, mapeMakerIconYellow } from "../utils/constants";
 
 const MapCityParkingsScreen: React.FC<{ route: any, navigation: any }> = ({ route, navigation }) => {
     
     const [cityParkings, setCityParkings] = useState<ICityParkingData[]>([]);
     const [parkingInfo, setParkingInfo] = useState<ICityParkingData | null>(null);
+    const [echarges, setEcharges] = useState<any[]>([]);
     const [showMoreInfo, setShowMoreInfo] = useState<boolean>(false);
     const [activeSearch, setActiveSearch] = useState<boolean>(false);
     let initialRegion: Region | undefined;
@@ -32,7 +33,8 @@ const MapCityParkingsScreen: React.FC<{ route: any, navigation: any }> = ({ rout
         const data = await dataFetch.city.parkings(route.params.cityData.key);
         console.log(data);
         if(!data.parkings) return;
-        setCityParkings(prev=>([...data.parkings]))
+        setCityParkings(prev=>([...data.parkings]));
+        fetchEcharges();
     }
 
     const getCounterColor = (parking: ICityParkingData) => {
@@ -44,11 +46,20 @@ const MapCityParkingsScreen: React.FC<{ route: any, navigation: any }> = ({ rout
     const handleSearchParkingSelect = (parking: ICityParkingData) => {
         setActiveSearch(false);
         setParkingInfo(parking)
+        
+    }
+
+    const fetchEcharges = async() => {
+        const data = await dataFetch.echarges();
+        if(!data.echarges) return;
+        setEcharges(data.echarges.slice(0, 50));
     }
 
     useEffect(()=>{
         fetchParkings();
     }, []);
+
+    console.log(echarges);
 
     return (
         <SafeAreaView style={{ flex: 1, position: 'relative' }}>
@@ -76,7 +87,17 @@ const MapCityParkingsScreen: React.FC<{ route: any, navigation: any }> = ({ rout
                         <Image source={makerIcon} style={{width: 50, height: 50}}/>
                     </Marker> 
                     )         
-                    })}
+                })}
+
+                {echarges.map(echarge => 
+                    <Marker 
+                        key={echarge.scode}
+                        coordinate={{ longitude: echarge.x, latitude: echarge.y }}
+                        title={echarge.sname}
+                    >
+                         <Image source={mapMakerIconEcharge} resizeMode="contain" style={{width: 50, height: 50}}/>
+                    </Marker>
+                )}
 
             </MapView>
             {parkingInfo && (
