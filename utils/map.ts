@@ -1,4 +1,5 @@
 import { ICityParkingData } from "../types";
+import { mapeMakerIconGreen, mapeMakerIconRed, mapeMakerIconYellow } from "./constants";
 
 export function calculateCoordinateDelta (parkings: ICityParkingData[]){
     let maxLongitude = parkings[0].x;   
@@ -38,4 +39,12 @@ export function calculateCoordinateDelta (parkings: ICityParkingData[]){
         deltaLatitude,
         deltaLongitude,
     }
+}
+
+export function getMapMakerIcon (parking: ICityParkingData) {
+
+        if(parking.mvalue === 0) return mapeMakerIconRed;
+        if(parking.mvalue <= parking.capacity/2) return mapeMakerIconYellow
+        return mapeMakerIconGreen
+    
 }

@@ -7,9 +7,9 @@ import { ICityParkingData, ScreensName } from "../types/index.d";
 import { useEffect } from "react";
 import { dataFetch } from "../api";
 import { calculateCoordinateDelta } from "../utils/map";
-import InputParking from "../components/InputParking";
 import SearchParking from "../components/SearchParking";
 import SearchIcon from "../components/SearchIcon";
+import { mapeMakerIconGreen, mapeMakerIconRed, mapeMakerIconYellow } from "../utils/constants";
 
 const MapCityParkingsScreen: React.FC<{ route: any, navigation: any }> = ({ route, navigation }) => {
     
@@ -58,14 +58,25 @@ const MapCityParkingsScreen: React.FC<{ route: any, navigation: any }> = ({ rout
                 initialRegion={ initialRegion }
                 onPress={() => parkingInfo && setParkingInfo(null)}
             >
-                {cityParkings.map(parking => (
+                {cityParkings.map(parking => {
+                    const makerIcon = (()=> {
+                        if(parking.mvalue === 0) return mapeMakerIconRed
+                        if(parking.capacity/2 <= parking.mvalue) return mapeMakerIconYellow
+                        return mapeMakerIconGreen
+                    })();
+
+                    return (
                     <Marker
                         key={parking.scode}
                         coordinate={{ longitude: parking.x, latitude: parking.y }}
                         title={parking.name_en}
                         onPress={() => setParkingInfo(parking)}
-                    />                    
-                ))}
+                        
+                    >
+                        <Image source={makerIcon} style={{width: 50, height: 50}}/>
+                    </Marker> 
+                    )         
+                    })}
 
             </MapView>
             {parkingInfo && (

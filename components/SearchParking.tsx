@@ -4,6 +4,7 @@ import { BlurView } from "expo-blur";
 import { themeStyles } from "../styleSheet/theme";
 import { useState } from "react";
 import InputParking from "./InputParking";
+import { getMapMakerIcon } from "../utils/map";
 
 
 
@@ -34,8 +35,8 @@ const SearchParking: React.FC<{parkings: ICityParkingData[], onClose: ()=>void, 
                 >
                     <View style={{marginRight: 6}}>
                         <Image 
-                            source={{uri: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Parking_icon.svg/256px-Parking_icon.svg.png"}}
-                            style={{width: 25, height: 25}}
+                            source={ getMapMakerIcon(parking) /*{ /*uri: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Parking_icon.svg/256px-Parking_icon.svg.png"*/}
+                            style={{width: 40, height: 40}}
                         />
                     </View>
                     <Text style={[themeStyles.text, {fontWeight: '600'}]}>{parking.name_en}</Text>
