@@ -2,30 +2,34 @@ import { Image, SafeAreaView, ScrollView, Text, TouchableOpacity, View } from "r
 import { themeStyles } from "../styleSheet/theme";
 import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
 import { BlurView } from "expo-blur";
-import { ScreensName } from "../types/index.d";
+import { ICityData, ScreensName } from "../types/index.d";
 
 const HomeScreen: React.FC<{ route: any, navigation: any }> = ({ route, navigation }) => {
     
-    const cities = [
+    const cities: ICityData[] = [
         {
+            key: 'Bolzano - Bozen',
             name: 'Bolzano',
             flag: 'https://www.novalibandiere.it/wp-content/uploads/bolzano-provincia.gif'
         },
         {
+            key: 'Meran - Merano',
             name: 'Merano',
             flag: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/ITA_Merano_COA.svg/816px-ITA_Merano_COA.svg.png"
         },
         {
+            key: 'Rovereto',
             name: 'Rovereto',
             flag: 'https://www.comune.rovereto.tn.it/var/opencityrovereto/storage/images/1298-302-ita-IT/Comune-di-Rovereto_header_logo.png'
         },
         {
+            key: 'Trento',
             name: 'Trento',
             flag: 'https://www.novalibandiere.it/wp-content/uploads/trento.gif',
     }];
 
-    const handleBtnPress = () => {
-        navigation.navigate(ScreensName.MapCityParkings, {cityId: "__CITY_ID_HERE__"})
+    const handleBtnPress = (cityData: ICityData) => {
+        navigation.navigate(ScreensName.MapCityParkings, {cityData})
     }
 
     return (
@@ -44,11 +48,14 @@ const HomeScreen: React.FC<{ route: any, navigation: any }> = ({ route, navigati
                         style={{borderRadius: 999}}
                     />
                 </View>
+                <View style={{width: '100%', marginBottom: 10}}>
+                    <Text style={[themeStyles.text, {textAlign: 'center', fontSize: 30, lineHeight: undefined, fontWeight: '600', color: '#fff'}]}>GeoGraphix</Text>
+                </View>
                     {cities.map(city => (
                         <TouchableOpacity 
                             key={city.name} 
                             style={{ borderRadius: 30, padding: 15, paddingTop: 15, paddingBottom: 15, width: '90%', maxWidth: 300, backgroundColor: '#fff', marginBottom: 20 }}
-                            onPress={handleBtnPress}
+                            onPress={()=>handleBtnPress(city)}
                         >
                             <View style={{ width: '100%', display: 'flex', flexDirection: 'row', flexWrap: 'nowrap' }}>
                                 <Image

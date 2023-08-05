@@ -1,43 +1,87 @@
 import { BlurView } from "expo-blur";
 import { useState } from "react";
-import { SafeAreaView, ScrollView, Text, TouchableOpacity, View } from "react-native";
-import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
+import { Image, SafeAreaView, ScrollView, Text, TouchableOpacity, View } from "react-native";
+import MapView, { Marker, PROVIDER_GOOGLE, Region } from "react-native-maps";
 import { themeStyles } from "../styleSheet/theme";
-import { ScreensName } from "../types/index.d";
+import { ICityParkingData, ScreensName } from "../types/index.d";
+import { useEffect } from "react";
+import { dataFetch } from "../api";
+import { calculateCoordinateDelta } from "../utils/map";
+import InputParking from "../components/InputParking";
+import SearchParking from "../components/SearchParking";
+import SearchIcon from "../components/SearchIcon";
 
 const MapCityParkingsScreen: React.FC<{ route: any, navigation: any }> = ({ route, navigation }) => {
-    const [parkingInfo, setParkingInfo] = useState<{} | null>(null);
+    
+    const [cityParkings, setCityParkings] = useState<ICityParkingData[]>([]);
+    const [parkingInfo, setParkingInfo] = useState<ICityParkingData | null>(null);
     const [showMoreInfo, setShowMoreInfo] = useState<boolean>(false);
+    const [activeSearch, setActiveSearch] = useState<boolean>(false);
+    let initialRegion: Region | undefined;
+
+    if(cityParkings.length > 0) {
+        const { 
+            deltaLatitude,
+            deltaLongitude,
+         } = calculateCoordinateDelta(cityParkings);
+
+        initialRegion = {longitude: cityParkings[0].x, latitude: cityParkings[1].y, longitudeDelta: deltaLongitude, latiduteDelta: deltaLatitude} as any;
+    }
+
+    const fetchParkings = async () => {
+        const data = await dataFetch.city.parkings(route.params.cityData.key);
+        console.log(data);
+        if(!data.parkings) return;
+        setCityParkings(prev=>([...data.parkings]))
+    }
+
+    const getCounterColor = (parking: ICityParkingData) => {
+        if(parking.mvalue === 0) return 'red';
+        if(parking.mvalue <= parking.capacity/2) return 'orange';
+        return 'green';
+    }
+
+    const handleSearchParkingSelect = (parking: ICityParkingData) => {
+        setActiveSearch(false);
+        setParkingInfo(parking)
+    }
+
+    useEffect(()=>{
+        fetchParkings();
+    }, []);
 
     return (
         <SafeAreaView style={{ flex: 1, position: 'relative' }}>
             <MapView
                 provider={PROVIDER_GOOGLE}
                 style={{ height: '100%', width: '100%' }}
-                initialRegion={{
-                    latitude: 37.78825,
-                    longitude: -122.4324,
-                    latitudeDelta: 0.0922,
-                    longitudeDelta: 0.0421,
-                }}
+                initialRegion={ initialRegion }
                 onPress={() => parkingInfo && setParkingInfo(null)}
             >
-                <Marker
-                    coordinate={{ longitude: -122.4324, latitude: 37.78825 }}
-                    title="Daouda"
-                    description="Ciao"
-                    onPress={() => setParkingInfo({})}
-                />
+                {cityParkings.map(parking => (
+                    <Marker
+                        key={parking.scode}
+                        coordinate={{ longitude: parking.x, latitude: parking.y }}
+                        title={parking.name_en}
+                        onPress={() => setParkingInfo(parking)}
+                    />                    
+                ))}
+
             </MapView>
             {parkingInfo && (
                 <View style={{ position: 'absolute', bottom: 50, top: showMoreInfo ? 50 : undefined, left: 10, right: 10, height: showMoreInfo ? undefined : '50%', maxHeight: showMoreInfo ? undefined : 300, borderRadius: 30, borderTopLeftRadius: 30, borderTopRightRadius: 30, overflow: 'hidden' }}>
                     <BlurView intensity={270} style={{ position: 'relative', width: '100%', height: '100%', padding: 20, backgroundColor: 'rgba(255, 255, 255, 0.4)' }}>
-                        <View style={{position: 'absolute', top: 15, right: 15}}>
-
-                        </View>
+                        
+                        <TouchableOpacity onPress={()=>setParkingInfo(null)} style={{position: 'absolute', top: 15, right: 15, zIndex: 20}}>
+                            <Image 
+                                source={{uri: "https://www.freeiconspng.com/thumbs/close-icon/black-close-icon-3.png"}}
+                                style={{width: 35, height: 35}}
+                    
+                            />
+                        </TouchableOpacity>
                         <ScrollView scrollEnabled={showMoreInfo}>
                             <View>
-                                <Text style={[themeStyles.text, { fontSize: 16, fontWeight: '600' }]}>Parking name</Text>
+                                <Text style={[themeStyles.text, { fontSize: 16, fontWeight: '600' }]}>{parkingInfo.name_en}</Text>
                             </View>
                             <View>
                                 <Text style={[themeStyles.text, { fontSize: 14, color: 'rgb(117, 128, 138)' }]}>Via nicolo rasmo 35/17</Text>
@@ -45,12 +89,12 @@ const MapCityParkingsScreen: React.FC<{ route: any, navigation: any }> = ({ rout
 
                             <View style={{ width: '100%', marginTop: 15, flex: 1, display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
                                 <TouchableOpacity
-                                    style={{ width: '100%', maxWidth: 250, height: 80, borderRadius: 40, backgroundColor: 'orange', overflow: 'hidden', display: "flex", alignItems: 'center', justifyContent: 'center', flexDirection: 'row' }}
+                                    style={{ width: '100%', maxWidth: 250, height: 80, borderRadius: 40, backgroundColor: getCounterColor(parkingInfo), overflow: 'hidden', display: "flex", alignItems: 'center', justifyContent: 'center', flexDirection: 'row' }}
                                     onPress={() => navigation.navigate(ScreensName.ParkingInfo, parkingInfo)}
                                 >
                                     <View style={{ width: '50%', borderRightWidth: 2, borderRightColor: 'rgba(255, 255, 255, 0.5)' }}>
                                         <View>
-                                            <Text style={[themeStyles.text, { textAlign: 'center', color: '#fff', fontWeight: '600' }]}>456</Text>
+                                            <Text style={[themeStyles.text, { textAlign: 'center', color: '#fff', fontWeight: '600' }]}>{parkingInfo.mvalue}</Text>
                                         </View>
                                         <View>
                                             <Text style={[themeStyles.text, { textAlign: 'center', color: '#fff', fontSize: 12 }]}>Disponibili</Text>
@@ -58,7 +102,7 @@ const MapCityParkingsScreen: React.FC<{ route: any, navigation: any }> = ({ rout
                                     </View>
                                     <View style={{ width: '50%' }}>
                                         <View>
-                                            <Text style={[themeStyles.text, { textAlign: 'center', color: '#fff', fontSize: 13 }]}>456</Text>
+                                            <Text style={[themeStyles.text, { textAlign: 'center', color: '#fff', fontSize: 13 }]}>{parkingInfo.capacity-parkingInfo.mvalue}</Text>
                                         </View>
                                         <View>
                                             <Text style={[themeStyles.text, { textAlign: 'center', color: '#fff', fontSize: 12 }]}>Occupati</Text>
@@ -77,6 +121,15 @@ const MapCityParkingsScreen: React.FC<{ route: any, navigation: any }> = ({ rout
                     </BlurView>
                 </View>
             )}
+
+            {activeSearch && (
+                <SearchParking onInfo={handleSearchParkingSelect} parkings={cityParkings} onClose={()=>setActiveSearch(false)}/>
+            )}
+
+            {!(activeSearch || parkingInfo) && (
+                <SearchIcon onClick={()=>setActiveSearch(true)} />
+            )}
+            
         </SafeAreaView>
     )
 }

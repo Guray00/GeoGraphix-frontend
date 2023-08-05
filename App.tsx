@@ -19,22 +19,37 @@ export default function App() {
         <Stack.Screen 
           name={ScreensName.Login}
           component={LoginScreen}
+          options={{
+            headerShown: false
+          }}
         />
         <Stack.Screen
           name={ScreensName.Home}
           component={HomeScreen}
+          options={{
+            headerShown: false
+          }}
         />
         <Stack.Screen 
           name={ScreensName.MapCityParkings}
           component={MapCityParkingsScreen}
+          options={{
+            title: "City"
+          }}
         />
         <Stack.Screen 
           name={ScreensName.ParkingInfo}
           component={ParkingInfoScreen}
+          options={{
+            title: "Parking"
+          }}
         />
         <Stack.Screen 
           name={ScreensName.ParkingSearch}
           component={ParkingSearchScreen}
+          options={{
+            title: "Search"
+          }}
         />
       </Stack.Navigator>
     </NavigationContainer>
