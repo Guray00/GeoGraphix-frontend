@@ -3,8 +3,6 @@ export enum ScreensName {
     SignUp = "SignUp",
     Home = "Home",
     MapCityParkings = "MapCityParkings",
-    ParkingInfo = "ParkingInfo",
-    ParkingSearch = "ParkingSearch"
 }
 
 export interface ICityData {

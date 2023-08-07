@@ -121,7 +121,6 @@ const MapCityParkingsScreen: React.FC<{ route: any, navigation: any }> = ({ rout
                             <View style={{ width: '100%', marginTop: 15, flex: 1, display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
                                 <TouchableOpacity
                                     style={{ width: '100%', maxWidth: 250, height: 80, borderRadius: 40, backgroundColor: getCounterColor(parkingInfo), overflow: 'hidden', display: "flex", alignItems: 'center', justifyContent: 'center', flexDirection: 'row' }}
-                                    onPress={() => /*navigation.navigate(ScreensName.ParkingInfo, parkingInfo)*/ {}}
                                 >
                                     <View style={{ width: '50%', borderRightWidth: 2, borderRightColor: 'rgba(255, 255, 255, 0.5)' }}>
                                         <View>
